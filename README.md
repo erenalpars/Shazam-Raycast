@@ -1,10 +1,16 @@
-# Shazam for Raycast (Windows)
+<p align="center">
+  <img src="assets/icon.png" width="128" height="128" alt="Shazam icon">
+</p>
+
+<h1 align="center">Shazam for Raycast (Windows)</h1>
 
 A [Raycast](https://www.raycast.com) extension for Windows that identifies the song playing on your PC. It records a few seconds of system audio ("what you hear") and recognizes it with Shazam, then gives you quick links to Spotify, YouTube Music, Apple Music and Shazam.
 
 Because it listens to the system's output instead of a microphone, it works with anything playing on your PC: browser tabs, music apps, videos, games.
 
 > **Unofficial.** This project is not affiliated with, endorsed by or connected to Shazam or Apple. It talks to an undocumented Shazam endpoint that may change or stop working at any time. All trademarks and logos belong to their respective owners.
+
+![A recognized song with cover art, artist, album and release year](metadata/shazam-1.png)
 
 ## Features
 
@@ -13,6 +19,8 @@ Because it listens to the system's output instead of a microphone, it works with
 - Open the song on **Spotify**, **YouTube Music**, **Apple Music** or **Shazam**. When Shazam has no direct link for a service, the extension opens a search on that service instead, so every service is always available.
 - Your preferred service is the first action, so pressing Enter opens the song there.
 - If nothing is playing, the extension says so without contacting Shazam.
+
+![The actions menu: open the song on Spotify, YouTube Music, Apple Music or Shazam, or copy its details](metadata/shazam-2.png)
 
 ## Requirements
 
@@ -41,6 +49,8 @@ npm run dev
 | Primary Music Service | Spotify | The service listed first after a match, so Enter opens the song there. |
 
 ## How it works
+
+![The Recognize command while it records system audio](metadata/shazam-0.png)
 
 1. **Capture**: `assets/record-loopback.ps1` uses WASAPI loopback capture (through inline C# compiled with PowerShell's `Add-Type`) to record the default output device. It converts the audio to 16 kHz mono WAV, which is the format Shazam's fingerprinting expects. No ffmpeg or other external binaries are needed.
 2. **Fingerprint**: [`shazamio-core`](https://github.com/shazamio/shazamio-core) (WebAssembly) builds a Shazam signature from the recording.

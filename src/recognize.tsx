@@ -5,7 +5,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { addToHistory } from "./lib/history";
 import { captureFilePath, recordSystemAudio } from "./lib/recorder";
 import { recognizeWavFile } from "./lib/shazam";
-import { CopyActions, OpenActions } from "./lib/track-actions";
+import { TrackDetail } from "./lib/track-detail";
 import type { RecognizedTrack } from "./lib/types";
 
 type Stage =
@@ -113,40 +113,6 @@ export default function RecognizeCommand() {
         />
       );
     case "match":
-      return <MatchView track={stage.track} retryAction={retryAction} />;
+      return <TrackDetail track={stage.track} extraActions={retryAction} />;
   }
-}
-
-function MatchView({ track, retryAction }: { track: RecognizedTrack; retryAction: React.ReactNode }) {
-  const cover = track.coverUrl ? `![Cover](${track.coverUrl}?raycast-width=220&raycast-height=220)\n\n` : "";
-  return (
-    <Detail
-      navigationTitle={track.title}
-      markdown={`${cover}# ${track.title}\n\n### ${track.artist}`}
-      metadata={
-        <Detail.Metadata>
-          <Detail.Metadata.Label title="Artist" text={track.artist} />
-          {track.album && <Detail.Metadata.Label title="Album" text={track.album} />}
-          {track.year && <Detail.Metadata.Label title="Released" text={track.year} />}
-          {track.shazamUrl && (
-            <>
-              <Detail.Metadata.Separator />
-              <Detail.Metadata.Link title="Shazam" target={track.shazamUrl} text="View on Shazam" />
-            </>
-          )}
-        </Detail.Metadata>
-      }
-      actions={
-        <ActionPanel>
-          <ActionPanel.Section>
-            <OpenActions track={track} />
-          </ActionPanel.Section>
-          <ActionPanel.Section>
-            <CopyActions track={track} />
-          </ActionPanel.Section>
-          <ActionPanel.Section>{retryAction}</ActionPanel.Section>
-        </ActionPanel>
-      }
-    />
-  );
 }
